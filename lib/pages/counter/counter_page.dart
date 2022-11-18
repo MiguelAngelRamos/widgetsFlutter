@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 
 class CounterPage extends StatefulWidget {
-//* StatefulWidget es una clase abstracta lo que significa que necesitamos sobreescribir los métodos que no tienen implementacion
+ final int initialValue;
 
+const CounterPage({super.key, this.initialValue = 0});
+
+//* StatefulWidget es una clase abstracta lo que significa que necesitamos sobreescribir los métodos que no tienen implementacion
  //* createState necesita retornar un dato de tipo state y este lo obtenemos de la clase _CounterPageState
  @override
- State createState() {
+ State<CounterPage> createState() {
   // return new _CounterPageState(); //* es un instancia de clase no es necesario en new
   return _CounterPageState(); //* retornamos una instancia de CounterPageState y esta instancia sera el estado de nuestro Statefulwidget
  }
 }
+//* Nuestro state esta vincunlado a nuestro "CounterPage"
+class _CounterPageState extends State<CounterPage> {
+  late int counter; //* la variable de contador
 
-class _CounterPageState extends State {
-  int counter = 0; //* la variable de contador
-  String name = "";
+  @override
+  void initState() {
+    //* Es llamado una unica vez, cuando es creado el estado y cuando nuestro widget es insertado en el arbol
+    super.initState();
+    print('Ejecutando Init State');
+    //* Cualquier clase que extiende de "State", en este caso seria "_CounterPageState", puede utilizar la propiedad "widget"
+    // widget.initialValue
+    counter = widget.initialValue;
+  }
   @override
   Widget build(BuildContext context) {
     print("Se ejecuta el método build");
@@ -25,16 +37,10 @@ class _CounterPageState extends State {
       floatingActionButton: FloatingActionButton(
 
         onPressed: () {
-          counter = counter + 1;
           print("presionado el boton en el funcion onPressed()");
-
           //* setState pertenece a la clase "State", notifica los cambios del estado
           //* llama nuevamente al método build y reconstruye la vista con el nuevo del state
-          setState(() {
-            // counter = counter + 1;
-            counter++;
-            name = "pedro";
-          });
+          setState(() { counter++;});
         },
       ),
     );
